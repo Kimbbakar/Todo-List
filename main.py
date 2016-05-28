@@ -16,6 +16,12 @@
 #
 
 form="""
+<!DOCTYPE html>
+<head>
+  <title> Sign Up </title>
+</head>
+
+<html>
 	<div>
 		<form method="post">
       <table>
@@ -40,7 +46,10 @@ form="""
 			<input type="submit" name="submit">
 		</form>
 	</div>
+</html>
 """
+
+
 
 import webapp2
 
