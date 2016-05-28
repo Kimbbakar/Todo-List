@@ -18,8 +18,17 @@
 form="""
 	<div>
 		<form method="post">
-			<b> <p1>Full Name: </p1>
-			<input type="text" name="name" value="%(name)s">
+      <table>
+        <td>
+          <p>Username:</p>
+        </td>
+        <td>
+          <input type="text" name="name" value="%(name)s"> 
+        </td>
+
+      </table>
+
+
 			<br>
 			<br>
 			<input type="submit" name="submit">
