@@ -19,12 +19,18 @@ form="""
 	<div>
 		<form method="post">
       <table>
-        <td>
-          <p>Username:</p>
-        </td>
-        <td>
-          <input type="text" name="name" value="%(name)s"> 
-        </td>
+        <tr>
+          <td>
+            <p>Username:</p>
+          </td>
+          <td>
+            <input type="text" name="name" value="%(name)s"> 
+          </td>
+          <td>
+            <b>
+            <p style="color:red">%(name_error)s</p>
+          <td>
+        </tr>
 
       </table>
 
@@ -45,16 +51,27 @@ def escape_html(s):
   s=s.replace('"',"&quot;")
   return s;
 
+def name_checker(s):
+  if (len(s)==0):
+    return False
+  for i in range(len(s)):
+    if (s[i] .isalpha() ==False):
+      return False
+  return True    
 
-def print_form(self,name):
-   self.response.write(form%{"name":escape_html(name) } )  
+
+def print_form(self,name,name_error):
+   self.response.write(form%{"name":escape_html(name),"name_error":name_error } )  
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    print_form(self,"")
+    print_form(self,"","")
   def post(self):
     name=self.request.get("name")
-    print_form(self,name)
+    if(name_checker(name) ==False):
+      print_form(self,name,"That's not a valid username.")
+    else:
+      self.response.write(name)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
