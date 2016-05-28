@@ -14,11 +14,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+form="""
+	<div>
+		<form method="post">
+			<b> <p1>Full Name: </p1>
+			<input type="text" name="name" value="%(name)s">
+			<br>
+			<br>
+			<input type="submit" name="submit">
+		</form>
+	</div>
+"""
+
 import webapp2
 
+def escape_html(s):
+  s=s.replace("&","&amp;")
+  s=s.replace(">","&gt;")
+  s=s.replace("<","&lt;")
+  s=s.replace('"',"&quot;")
+  return s;
+
+
+def print_form(self,name):
+   self.response.write(form%{"name":escape_html(name) } )  
+
 class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write('Hello world!')
+  def get(self):
+    print_form(self,"")
+  def post(self):
+    name=self.request.get("name")
+    print_form(self,name)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
