@@ -49,7 +49,14 @@ form="""
 </html>
 """
 
+welcomepage="""
+<!DOCTYPE html>
+<html>
 
+  <h1>Welcome, %(name)s!</h1>
+
+</html>
+"""
 
 import webapp2
 
@@ -80,8 +87,15 @@ class MainHandler(webapp2.RequestHandler):
     if(name_checker(name) ==False):
       print_form(self,name,"That's not a valid username.")
     else:
-      self.response.write(name)
+      self.redirect('/welcome?username='+name)
+
+
+class welcome(webapp2.RequestHandler):
+  def get(self):
+    name= self.request.get('username')
+    self.response.write(welcomepage%{"name":name})
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),('/welcome', welcome)
 ], debug=True)
