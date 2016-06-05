@@ -51,6 +51,10 @@ form="""
 
 welcomepage="""
 <!DOCTYPE html>
+<head>
+  <title> Welcome </title>
+</head>
+
 <html>
 
   <h1>Welcome, %(name)s!</h1>
