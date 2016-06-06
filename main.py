@@ -19,6 +19,10 @@ form="""
 <!DOCTYPE html>
 <head>
   <title> Sign Up </title>
+  <style type="text/css">
+    .label {text-align: right}
+  </style>
+
 </head>
 
 <html>
@@ -26,8 +30,8 @@ form="""
 		<form method="post">
       <table>
         <tr>
-          <td>
-            <p>Username:</p>
+          <td class="label">
+            Username:
           </td>
           <td>
             <input type="text" name="name" value="%(name)s"> 
@@ -39,8 +43,8 @@ form="""
         </tr>
 
         <tr>
-          <td>
-            <p>Password:</p>
+          <td class="label">
+            Password:
           </td>
           <td>
             <input type="password" name="password" value=""> 
@@ -52,8 +56,8 @@ form="""
         </tr>
 
         <tr>
-          <td>
-            <p>Verify Password:</p>
+          <td class="label">
+            Verify Password:
           </td>
           <td>
             <input type="password" name="verify" value=""> 
