@@ -38,6 +38,32 @@ form="""
           <td>
         </tr>
 
+        <tr>
+          <td>
+            <p>Password:</p>
+          </td>
+          <td>
+            <input type="password" name="password" value=""> 
+          </td>
+          <td>
+            <b>
+            <p style="color:red">%(pass_error)s</p>
+          <td>
+        </tr>
+
+        <tr>
+          <td>
+            <p>Verify Password:</p>
+          </td>
+          <td>
+            <input type="password" name="verify" value=""> 
+          </td>
+          <td>
+            <b>
+            <p style="color:red">%(verify_error)s</p>
+          <td>
+        </tr>
+
       </table>
 
 
@@ -79,17 +105,45 @@ def name_checker(s):
       return False
   return True    
 
+def pass_checker(s):
+  if (len(s)==0):
+    return False
+  for i in range(len(s)):
+    if (s[i] .isalpha() ==False and (s[i]<'0' or s[i]>'9') ):
+      return False
+  return True
 
-def print_form(self,name,name_error):
-   self.response.write(form%{"name":escape_html(name),"name_error":name_error } )  
+
+def print_form(self,name,name_error,pass_error,verify_error):
+   self.response.write(form%{"name":escape_html(name),"name_error":name_error,"pass_error":pass_error,"verify_error":verify_error } )  
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    print_form(self,"","")
+    print_form(self,"","","","")
   def post(self):
     name=self.request.get("name")
+    password=self.request.get("password")
+    verify=self.request.get("verify")
+
+    name_error="";
+    pass_error="";
+    verify_error="";
+
+    ok=True;    
+
+
     if(name_checker(name) ==False):
-      print_form(self,name,"That's not a valid username.")
+      ok=False;
+      name_error="That's not a valid username.";
+
+    if(pass_checker(password)==False ):
+      ok=False;
+      pass_error="That's not a valid password.";
+    elif(password!=verify):
+      ok=False;
+      verify_error="password dose not match.";
+    if (ok==False):
+      print_form(self,name,name_error,pass_error,verify_error);
     else:
       self.redirect('/welcome?username='+name)
 
