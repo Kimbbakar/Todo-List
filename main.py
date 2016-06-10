@@ -71,7 +71,7 @@ form="""
 
         <tr>
           <td class="label">
-            Email:
+            Email(Optional):
           </td>
           <td>
             <input type="text" name="email" value="%(email)s"> 
@@ -115,17 +115,20 @@ def escape_html(s):
   s=s.replace('"',"&quot;")
   return s;
 
+
+#minimum username length 3 and maximum username length 20
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def name_checker(username):
   return username and USER_RE.match(username)
 
+#minimum pass length 3 and maximum pass length 20
 PASS_RE = re.compile(r"^.{3,20}$")
 def pass_checker(password):
-  return len(password)>0 and PASS_RE.match(password)
+  return password and PASS_RE.match(password)
 
 EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def email_checker(email):
-  return len(email)==0 or EMAIL_RE.match(email)!=None
+  return not email or EMAIL_RE.match(email)
  
 
 def print_form(self,name,name_error,pass_error,verify_error,email,email_error):
@@ -152,13 +155,13 @@ class MainHandler(webapp2.RequestHandler):
       ok=False;
       name_error="That's not a valid username.";
 
-    if(pass_checker(password)==False ):
+    if not(pass_checker(password)):
       ok=False;
       pass_error="That's not a valid password.";
     elif(password!=verify):
       ok=False;
       verify_error="password dose not match.";
-    if(email_checker(email)==False ):
+    if not(email_checker(email) ):
       ok=False;
       email_error="That's not a valid mail address"
 
