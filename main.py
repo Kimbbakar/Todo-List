@@ -69,12 +69,22 @@ form="""
           <td>
         </tr>
 
+        <tr>
+          <td class="label">
+            Email:
+          </td>
+          <td>
+            <input type="text" name="email" value="%(email)s"> 
+          </td>
+          <td>
+            <b>
+            <p style="color:red">%(email_error)s</p>
+          <td>
+        </tr>
 
 
       </table>
 
-
-			<br>
 			<br>
 			<input type="submit" name="submit">
 		</form>
@@ -115,15 +125,15 @@ def pass_checker(password):
 
 EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def email_checker(email):
-  return not email or EMAIL_RE.match(email)
+  return len(email)==0 or EMAIL_RE.match(email)!=None
  
 
-def print_form(self,name,name_error,pass_error,verify_error):
-   self.response.write(form%{"name":escape_html(name),"name_error":name_error,"pass_error":pass_error,"verify_error":verify_error } )  
+def print_form(self,name,name_error,pass_error,verify_error,email,email_error):
+   self.response.write(form%{"name":escape_html(name),"name_error":name_error,"pass_error":pass_error,"verify_error":verify_error,"email":escape_html(email),"email_error":email_error } )  
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    print_form(self,"","","","")
+    print_form(self,"","","","","","")
   def post(self):
     name=self.request.get("name")
     password=self.request.get("password")
@@ -148,8 +158,12 @@ class MainHandler(webapp2.RequestHandler):
     elif(password!=verify):
       ok=False;
       verify_error="password dose not match.";
+    if(email_checker(email)==False ):
+      ok=False;
+      email_error="That's not a valid mail address"
+
     if (ok==False):
-      print_form(self,name,name_error,pass_error,verify_error);
+      print_form(self,name,name_error,pass_error,verify_error,email,email_error);
     else:
       self.redirect('/welcome?username='+name)
 
