@@ -69,6 +69,8 @@ form="""
           <td>
         </tr>
 
+
+
       </table>
 
 
@@ -93,6 +95,7 @@ welcomepage="""
 </html>
 """
 
+import re
 import webapp2
 
 def escape_html(s):
@@ -102,22 +105,18 @@ def escape_html(s):
   s=s.replace('"',"&quot;")
   return s;
 
-def name_checker(s):
-  if (len(s)==0):
-    return False
-  for i in range(len(s)):
-    if (s[i] .isalpha() ==False):
-      return False
-  return True    
+USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+def name_checker(username):
+  return username and USER_RE.match(username)
 
-def pass_checker(s):
-  if (len(s)==0):
-    return False
-  for i in range(len(s)):
-    if (s[i] .isalpha() ==False and (s[i]<'0' or s[i]>'9') ):
-      return False
-  return True
+PASS_RE = re.compile(r"^.{3,20}$")
+def pass_checker(password):
+  return len(password)>0 and PASS_RE.match(password)
 
+EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
+def email_checker(email):
+  return not email or EMAIL_RE.match(email)
+ 
 
 def print_form(self,name,name_error,pass_error,verify_error):
    self.response.write(form%{"name":escape_html(name),"name_error":name_error,"pass_error":pass_error,"verify_error":verify_error } )  
@@ -129,10 +128,12 @@ class MainHandler(webapp2.RequestHandler):
     name=self.request.get("name")
     password=self.request.get("password")
     verify=self.request.get("verify")
+    email=self.request.get("email");
 
     name_error="";
     pass_error="";
     verify_error="";
+    email_error="";
 
     ok=True;    
 
