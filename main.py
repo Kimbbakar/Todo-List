@@ -132,7 +132,7 @@ def email_checker(email):
  
 
 def print_form(self,name,name_error,pass_error,verify_error,email,email_error):
-   self.response.write(form%{"name":escape_html(name),"name_error":name_error,"pass_error":pass_error,"verify_error":verify_error,"email":escape_html(email),"email_error":email_error } )  
+  self.response.write(form%{"name":escape_html(name),"name_error":name_error,"pass_error":pass_error,"verify_error":verify_error,"email":escape_html(email),"email_error":email_error } )  
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
