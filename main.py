@@ -98,6 +98,14 @@ form="""
 			<input type="submit" name="submit"> 
 
 		</form>
+
+    <br>
+    <br>
+    <br>
+
+    <a href="/signin">
+       <button>All ready have an account?</button>
+    </a>
 	</div>
 </html>
 """
@@ -142,6 +150,64 @@ welcomepage="""
 </html>
 """
 
+signin_form="""
+<!DOCTYPE html>
+<head>
+  <title> Sign Up </title>
+  <style type="text/css">
+    .label {text-align: right}
+  </style>
+
+</head>
+
+<html>
+  <h2>SignIn</h2>
+  <div>
+    <b>
+    <p style="color:red">%(LoginError)s</p>
+
+    <form method="post">
+
+      <table>
+
+          <td class="label">
+            Username:
+          </td>
+          <td>
+            <input type="text" name="username" value="%(username)s"> 
+          </td> 
+        </tr>
+
+        <tr>
+          <td class="label">
+            Password:
+          </td>
+          <td>
+            <input type="password" name="password" value=""> 
+          </td>
+        </tr>
+
+      </table>
+
+      <br>
+      <input type="submit" name="submit">
+        
+
+    </form>
+      <br>
+      <br>
+
+    <a href="/">
+       <button>Home</button>
+    </a>
+  </div>
+</html> 
+
+"""
+
+
+
+
 user_list = list()
 maps = dict()
 ID = 0
@@ -183,6 +249,15 @@ def find_info(username):
         if i[0]==username:
             return i
 
+def checking(username,password):
+    for i in user_list:
+        if i[0]==username and i[3]==password:
+            return True 
+
+    return False
+
+
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         print_form(self,"","","","","","","")
@@ -216,16 +291,18 @@ class MainHandler(webapp2.RequestHandler):
         if not(email_checker(email) ):
             ok=False;
             email_error="That's not a valid mail address"
-        if len(email)==0:
-            email= "Not available"
+
 
         if (ok==False):
             print_form(self,name,username,username_error,pass_error,verify_error,email,email_error);
         else:
+            if len(email)==0:
+                email= "Not available"
             ID+=1
             maps[username] = ID
             user_list.append( [username,ID,name,password,email] )
-            self.redirect('/welcome?username='+username)
+            self.redirect('/')
+           # self.redirect('/welcome?username='+username)
 
 
 class welcome(webapp2.RequestHandler):
@@ -234,9 +311,23 @@ class welcome(webapp2.RequestHandler):
         info = find_info(username)
         self.response.write(welcomepage%{"username":info[0],"name":info[2],"email":info[4] } )
 
+ 
 class signin(webapp2.RequestHandler):
     def get(self):
-        pass
+      self.response.write(signin_form%{"LoginError":"", "username":"","password":"" } )
+    def post(self):
+        username= self.request.get('username')   
+        password= self.request.get('password')
+        ok = checking(username,password)
+
+        if ok==True:
+            self.redirect('/welcome?username='+username)
+        else:
+            self.response.write(signin_form%{"LoginError":"Username And Password does not match", "username":username,"password":"" } )            
+
+
+
+
 
 #<a href="islam.html">Islam</a> and <a href="buddha.html">Buddhism</a>.
 
