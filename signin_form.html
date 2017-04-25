@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+  <title> Sign Up </title>
+  <style type="text/css">
+    .label {text-align: right}
+  </style>
+
+</head>
+
+<html>
+  <h2>SignIn</h2>
+  <div>
+    <b>
+    <p style="color:red">{{ LoginError}}</p>
+
+    <form method="post">
+
+      <table>
+
+          <td class="label">
+            Username:
+          </td>
+          <td>
+            <input type="text" name="username" value="{{username}}"> 
+          </td> 
+        </tr>
+
+        <tr>
+          <td class="label">
+            Password:
+          </td>
+          <td>
+            <input type="password" name="password" value=""> 
+          </td>
+        </tr>
+
+      </table>
+
+      <br>
+      <input type="submit" name="submit">
+        
+
+    </form>
+      <br>
+      <br>
+
+    <a href="/">
+       <button>Home</button>
+    </a>
+  </div>
+</html>  
